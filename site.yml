@@ -1,0 +1,34 @@
+---
+# This playbook deploys the whole application stack in this site.  
+
+# Apply common configuration to all hosts
+- hosts: all
+  remote_user: ec2-user
+  sudo: yes
+  roles:
+  - common
+
+# Configure and deploy database servers.
+- hosts: dbservers
+  remote_user: ec2-user
+  sudo: yes
+  roles:
+  - db
+
+# Configure and deploy the web servers. Note that we include two roles here, 
+# the 'base-apache' role which simply sets up Apache, and 'web' which includes
+# our example web application.
+- hosts: webservers
+  remote_user: ec2-user
+  sudo: yes
+  roles:
+  - base-apache
+  - web
+
+# Configure and deploy the Nagios monitoring node(s).
+#- hosts: monitoring
+#  remote_user: ec2-user
+#  sudo: yes
+#  roles:
+#  - base-apache
+#  - nagios
