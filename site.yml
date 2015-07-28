@@ -24,11 +24,3 @@
   roles:
   - base-apache
   - web
-
-# Configure and deploy the Nagios monitoring node(s).
-#- hosts: monitoring
-#  remote_user: ec2-user
-#  sudo: yes
-#  roles:
-#  - base-apache
-#  - nagios
