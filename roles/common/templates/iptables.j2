@@ -13,10 +13,6 @@
 -A INPUT -p tcp  --dport 3306 -j  ACCEPT
 {% endif %}
 
-{% if inventory_hostname in groups['lbservers'] %}
--A INPUT -p tcp  --dport {{ listenport }} -j  ACCEPT
-{% endif %}
-
 {% for host in groups['monitoring'] %}
 -A INPUT -p tcp -s {{ hostvars[host].ansible_default_ipv4.address }} --dport 5666 -j ACCEPT
 {% endfor %}
