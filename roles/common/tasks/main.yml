@@ -7,6 +7,9 @@
    - libselinux-python
    - libsemanage-python
 
+- name: Upgrade all packages
+  yum: name=* state=latest
+
 - name: Create the repository for EPEL
   copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
 
