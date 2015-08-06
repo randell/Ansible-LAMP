@@ -6,6 +6,28 @@ user=mysql
 symbolic-links=0
 port={{ mysql_port }}
 
+## Custom config
+skip-name-resolve
+max_allowed_packet=32M
+innodb_file_per_table=1
+innodb_buffer_pool_size=512M # Please adjust base on InnoDB table size
+#key_buffer_size=256M # Please adjust if we use MyISAM tables with Index
+query_cache_size=256M # Should be increase if we have memory available
+innodb_additional_mem_pool_size=32M
+innodb_flush_log_at_trx_commit=1
+innodb_log_buffer_size=8M
+thread_cache_size=4
+max_connect_errors=100000
+max_connections=600
+max_user_connections=120
+interactive_timeout=25
+wait_timeout=120
+tmp_table_size=16M
+max_heap_table_size=16M
+table_cache=2500 # Read http://www.mysqlperformanceblog.com/2009/11/16/table_cache-negative-scalability/
+table_open_cache=1024 # check ulimit -a ; Update /etc/security/limits.conf : http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/
+join_buffer_size = 2M
+
 [mysqld_safe]
 log-error=/var/log/mysqld.log
 pid-file=/var/run/mysqld/mysqld.pid
