@@ -1,0 +1,65 @@
+---
+# Apache
+  - name: Set HTTPD in worker mode
+    replace: dest=/etc/sysconfig/httpd regexp="^#HTTPD=/usr/sbin/httpd.worker" replace="HTTPD=/usr/sbin/httpd.worker"
+
+  - name: Download rpmforge repo
+    get_url: dest=/tmp/rpmforge.rpm  url=http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.{{ansible_architecture}}.rpm
+
+  - name: Install rpmforge repo
+    yum: pkg=/tmp/rpmforge.rpm state=present
+
+  - name: Disable rpmforge by default
+    replace: dest=/etc/yum.repos.d/rpmforge.repo regexp="^enabled = 1" replace="enabled = 0"
+
+  - name: Install mod_fastcgi from rpmforge
+    yum:  enablerepo=rpmforge name=mod_fastcgi state=present
+
+  - name: Set up mod_fastcgi
+    copy: src=fastcgi.conf dest=/etc/httpd/conf.d/fastcgi.conf
+
+  - name: Copy httpd mod_log_firstbyte module
+    copy: src={{ansible_distribution}}{{ansible_distribution_major_version}}_{{ansible_architecture}}_mod_log_firstbyte.so dest=/usr/lib64/httpd/modules/mod_log_firstbyte.so
+
+  - name: Copy httpd rr_generic.conf
+    copy: src=rr_generic.conf dest=/etc/httpd/conf.d/rr_generic.conf
+
+  - name: Create vhost root
+    file: path=/data/websites-live/{{vhost_name}} state=directory mode=0755
+
+  - name: Create vhost root_public
+    file: path=/data/websites-live/{{vhost_name}}/public state=directory mode=0755 owner=websites-live group=websites-live
+
+  - name: Check if a vhost index file has already been created
+    stat: path=/data/websites-live/{{vhost_name}}/public/index.html
+    register: index
+
+  - name: Create vhost index file
+    file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0644 owner=websites-live group=websites-live
+    when: not index.stat.exists
+
+  - name: Create vhost root_private
+    file: path=/data/websites-live/{{vhost_name}}/private state=directory mode=0755 owner=websites-live group=websites-live
+
+  - name: Create vhost root_logs
+    file: path=/data/websites-live/{{vhost_name}}/logs state=directory mode=0755
+
+  - name: Check if vhost error_log file has already been created
+    stat: path=/data/websites-live/{{vhost_name}}/logs/error.log
+    register: error_log
+
+  - name: Create vhost error_log
+    file: path=/data/websites-live/{{vhost_name}}/logs/error.log state=touch
+    when: not error_log.stat.exists
+
+  - name: Copy the htpasswd_readme template
+    template: src=htpasswd_readme.j2 dest=/data/websites-live/{{vhost_name}}/private/htpasswd_readme.txt
+
+  - name: Copy the websites-live.conf template
+    template: src=websites.conf.j2 dest=/etc/httpd/conf.d/websites-live.conf backup=yes
+
+    notify:
+    - restart apache
+
+  - name: ensure apache is running (and enable it at boot)
+    service: name=httpd state=started enabled=yes

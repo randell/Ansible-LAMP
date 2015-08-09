@@ -1,19 +1,11 @@
 ---
 
 # httpd is handled by the base-apache role upstream
-- name: Install php and git 
-  yum: name={{ item }} state=present
-  with_items:
-     - mysql
-     - php-fpm
-     - php-mysql
-     - php-gd
-     - php-pdo
-     - php-xml
-     - php-curl
-     - php-pecl-apc
-     - php-drush-drush
-     - php-mbstring
+  - include: web_pkg.yml tags=web_pkg
+  - include: web_ssh.yml tags=web_ssh
+  - include: web_user.yml tags=web_user
+  - include: web_httpd.yml tags=web_httpd
+  - include: web_php.yml tags=web_php
 
-- name: Copy the code from repository
-  git: repo={{ repository }} version={{ webapp_version }} dest=/var/www/html/
+#- name: Copy the code from repository
+#  git: repo={{ repository }} version={{ webapp_version }} dest=/var/www/html/

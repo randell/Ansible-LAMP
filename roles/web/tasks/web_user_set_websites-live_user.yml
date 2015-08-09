@@ -1,0 +1,18 @@
+---
+
+  - name: Generate sys password
+    shell: dd if=/dev/urandom bs=1 count=10 2>/dev/null | base64 | cut -c -14
+    no_log: True
+    register: usr_pwd
+
+  - name: Crypt sys password
+    shell: python -c 'import crypt; print crypt.crypt("{{usr_pwd.stdout}}", "$1$SomeSalt$")'
+    no_log: True
+    register: usr_pwd_hash
+
+  - name: add websites-live user
+    user: name=websites-live createhome=no home=/ shell=/sbin/nologin password="{{usr_pwd_hash.stdout}}"
+
+  - name: PWD
+    debug: msg="websites-live password  =====================> {{usr_pwd.stdout}} <====================="
+

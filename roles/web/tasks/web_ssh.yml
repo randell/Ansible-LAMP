@@ -1,0 +1,19 @@
+---
+# SSH
+  - name: Change the Subsystem sftp command in /etc/ssh/sshd_config
+    replace: dest=/etc/ssh/sshd_config regexp="^Subsystem.*" replace="Subsystem sftp internal-sftp" backup=yes
+
+  - name: Set up SFTP jailed account
+    blockinfile:
+      dest: /etc/ssh/sshd_config
+      backup: yes
+      marker: "# {mark} ANSIBLE MANAGED BLOCK FOR websites-live"
+      content: |
+        Match User websites-live
+                ChrootDirectory /data/websites-live/{{vhost_name}}
+                ForceCommand internal-sftp
+                X11Forwarding no
+                AllowTcpForwarding no
+    notify:
+    - restart sshd
+

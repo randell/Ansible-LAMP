@@ -1,0 +1,46 @@
+---
+# PHP
+  - name: Change APC cfg
+    replace: dest=/etc/php.d/apc.ini regexp="^apc.shm_size=.*" replace=apc.shm_size=265M
+
+  - name: Change PHP cfg 1/
+    replace: dest=/etc/php.ini regexp="^expose_php =.*" replace="expose_php = Off"
+
+  - name: Change PHP cfg 2/
+    replace: dest=/etc/php.ini regexp="^post_max_size =.*" replace="post_max_size = 10M"
+
+  - name: Change PHP cfg 3/
+    replace: dest=/etc/php.ini regexp="^upload_max_filesize =.*" replace="upload_max_filesize = 10M"
+
+  - name: Change PHP cfg 4/
+    replace: dest=/etc/php.ini regexp="^;date.timezone =" replace="date.timezone = Europe/London"
+
+  - name: Set up PHP-FPM cfg 1/
+    file: path=/var/lib/php/session/ state=directory mode=0770 owner=root group=websites-live
+
+  - name: Set up PHP-FPM cfg 2/
+    replace: dest=/etc/php-fpm.conf regexp="^;emergency_restart_threshold.*" replace="emergency_restart_threshold = 10"
+
+  - name: Set up PHP-FPM cfg 3/
+    replace: dest=/etc/php-fpm.conf regexp="^;emergency_restart_interval.*" replace="emergency_restart_interval = 1m"
+
+  - name: Set up PHP-FPM cfg 4/
+    replace: dest=/etc/php-fpm.conf regexp="^;process_control_timeout.*" replace="process_control_timeout = 10"
+
+  - name: Set up PHP-FPM pool cfg 1/
+    replace: dest=/etc/php-fpm.d/www.conf regexp="^user = apache.*" replace="user = websites-live"
+
+  - name: Set up PHP-FPM pool cfg 2/
+    replace: dest=/etc/php-fpm.d/www.conf regexp="^group = apache.*" replace="group = websites-live"
+
+  - name: Set up PHP-FPM pool cfg 3/
+    replace: dest=/etc/php-fpm.d/www.conf regexp="^;pm.max_requests = 500.*" replace="pm.max_requests = 500"
+
+  - name: Set up PHP-FPM pool cfg 4/
+    replace: dest=/etc/php-fpm.d/www.conf regexp="^;catch_workers_output.*" replace="catch_workers_output = yes"
+    notify:
+    - restart php-fpm
+
+  - name: ensure php-fpm is running (and enable it at boot)
+    service: name=php-fpm state=started enabled=yes
+
