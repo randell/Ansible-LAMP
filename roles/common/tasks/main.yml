@@ -16,13 +16,13 @@
 - name: Create the GPG key for EPEL
   copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
 
-- name: Install ntp 
-  yum: name=ntp state=present
-  tags: ntp
-
-- name: Start the ntp service
-  service: name=ntpd state=started enabled=yes
-  tags: ntp
+- name: install some base pkg
+  yum: name={{item}} state=present
+  with_items:
+   - vim
+   - openssh-clients
+   - wget
+   - curl
 
 - name: disable and stop iptables service
   service: name=iptables enabled=no state=stopped
