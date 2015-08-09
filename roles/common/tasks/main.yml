@@ -23,6 +23,7 @@
    - openssh-clients
    - wget
    - curl
+   - git
 
 - name: disable and stop iptables service
   service: name=iptables enabled=no state=stopped
