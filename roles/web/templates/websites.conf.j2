@@ -1,0 +1,24 @@
+
+<VirtualHost *:80>
+        ServerName {{ vhost_redir }}
+        Redirect 301 / http://{{ vhost_name }}/
+</VirtualHost>
+
+<VirtualHost *:80>
+        ServerName {{ vhost_name }}
+        ServerAlias {{ vhost_alias }}
+        DocumentRoot /data/websites-live/{{ vhost_name }}/public
+
+        <Directory /data/websites-live/{{ vhost_name }}/public>
+                AllowOverride All
+                <IfVersion >= 2.4>
+                        Require all granted
+                </IfVersion>
+        </Directory>
+
+        ErrorLog /data/websites-live/{{ vhost_name }}/logs/error.log
+        #CustomLog /var/log/httpd/transfer.log combined
+        CustomLog /var/log/httpd/transfer.log rr_format_01
+
+</VirtualHost>
+
