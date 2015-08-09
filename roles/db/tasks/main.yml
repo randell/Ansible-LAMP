@@ -6,6 +6,9 @@
   with_items:
    - mysql-server
    - MySQL-python27
+   
+- name: Move MyQSL data dir
+  command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
 
 - name: Create Mysql configuration file
   template: src=my.cnf.j2 dest=/etc/my.cnf
@@ -16,7 +19,21 @@
   service: name=mysqld state=started enabled=yes
 
 - name: Create Application Database
-  mysql_db: name={{ dbname }} state=present
+  mysql_db: name={{ db_name }} state=present
+
+- name: Generate DB User password
+  shell: dd if=/dev/urandom bs=1 count=10 2>/dev/null | base64 | cut -c -14
+  no_log: True
+  register: my_usr_pwd
+  when: db_exist.changed
 
 - name: Create Application DB User
-  mysql_user: name={{ dbuser }} password={{ upassword }} priv=*.*:ALL host='%' state=present
+  mysql_user: name={{ db_user }} password={{ my_usr_pwd.stdout }} priv={{ db_name }}.*:ALL host='%' state=present
+
+- name: MySQL details
+  # http://docs.ansible.com/YAMLSyntax.html#gotchas
+  debug: msg="MySQL connection details DB name={{db_name}} DB user={{db_user}} DB pass={{my_usr_pwd.stdout}}"
+  when: db_exist.changed
+  
+- name: Create /data/bin
+  file: path=/data/bin state=directory mode=0700

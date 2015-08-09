@@ -4,6 +4,5 @@
 
 mysqlservice: mysqld
 mysql_port: 3306
-dbuser: root
-dbname: foodb
-upassword: abc
+db_user: root
+db_name: CHANGEME
