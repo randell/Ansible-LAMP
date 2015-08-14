@@ -5,4 +5,4 @@
 mysqlservice: mysqld
 mysql_port: 3306
 db_user: root
-db_name: CHANGEME
+db_name: testdb1

@@ -20,7 +20,6 @@
   yum: name={{item}} state=present
   with_items:
    - vim
-   - openssh-clients
    - wget
    - curl
    - git
