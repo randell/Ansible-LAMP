@@ -20,6 +20,7 @@
 
 - name: Create Application Database
   mysql_db: name={{ db_name }} state=present
+  register: db_exist
 
 - name: Generate DB User password
   shell: dd if=/dev/urandom bs=1 count=10 2>/dev/null | base64 | cut -c -14
