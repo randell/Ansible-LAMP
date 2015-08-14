@@ -2,7 +2,7 @@
 
 # httpd is handled by the base-apache role upstream
   - include: web_pkg.yml tags=web_pkg
-  - include: web_ssh.yml tags=web_ssh
+#  - include: web_ssh.yml tags=web_ssh
   - include: web_user.yml tags=web_user
   - include: web_httpd.yml tags=web_httpd
   - include: web_php.yml tags=web_php
