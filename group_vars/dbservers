@@ -4,5 +4,5 @@
 
 mysqlservice: mysqld
 mysql_port: 3306
-db_user: root
+db_user: randell
 db_name: testdb1

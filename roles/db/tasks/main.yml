@@ -17,6 +17,13 @@
 - name: Start Mysql Service (and enable it at boot)
   service: name=mysqld state=started enabled=yes
 
+- name: stat /root/.my.cnf
+  stat: path=/root/.my.cnf
+  register: root_my_cnf
+
+- include: set_mysql_pwd.yml
+  when: not root_my_cnf.stat.exists
+
 - name: Create Application Database
   mysql_db: name={{ db_name }} state=present
   register: db_exist
