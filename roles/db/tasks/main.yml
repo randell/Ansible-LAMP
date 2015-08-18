@@ -11,11 +11,10 @@
   command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
 
 - name: Create Mysql configuration file
-  template: src=my.cnf.j2 dest=/etc/my.cnf
-  notify: 
-  - restart mysql
+  template: src=my.cnf dest=/etc/my.cnf
+  notify: restart mysqld
 
-- name: Start Mysql Service
+- name: Start Mysql Service (and enable it at boot)
   service: name=mysqld state=started enabled=yes
 
 - name: Create Application Database
