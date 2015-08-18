@@ -19,7 +19,7 @@
     copy: src=fastcgi.conf dest=/etc/httpd/conf.d/fastcgi.conf
 
   - name: Copy httpd mod_log_firstbyte module
-    copy: src={{ansible_distribution}}{{ansible_distribution_major_version}}_{{ansible_architecture}}_mod_log_firstbyte.so dest=/usr/lib64/httpd/modules/mod_log_firstbyte.so
+    copy: src=CentOS6_x86_64_mod_log_firstbyte.so dest=/usr/lib64/httpd/modules/mod_log_firstbyte.so
 
   - name: Copy httpd rr_generic.conf
     copy: src=rr_generic.conf dest=/etc/httpd/conf.d/rr_generic.conf

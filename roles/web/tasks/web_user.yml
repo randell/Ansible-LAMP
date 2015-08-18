@@ -1,11 +1,11 @@
 ---
-  - name: Check if websites-live user already exist
-    command: grep "^websites-live:" /etc/passwd
-    ignore_errors: yes
-    no_log: True
-    changed_when: False
-    register: user_exist
+#  - name: Check if websites-live user already exist
+#    command: grep "^websites-live:" /etc/passwd
+#    ignore_errors: yes
+#    no_log: True
+#    changed_when: False
+#    register: user_exist
 
   - include: web_user_set_websites-live_user.yml
-    when: user_exist.rc != 0
+#    when: user_exist.rc != 0
 
