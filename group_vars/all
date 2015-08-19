@@ -2,4 +2,6 @@
 # Variables here are applicable to all host groups
 
 httpd_port: 80
+vhost_redir: domain-name.com
 vhost_name: CHANGEME_www.domain-name.com
+vhost_alias: CHANGEME.domain-name.com

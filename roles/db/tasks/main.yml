@@ -10,8 +10,8 @@
 - name: Move MyQSL data dir
   command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
 
-- name: Create Mysql configuration file
-  copy: src=my.cnf dest=/etc/my.cnf
+- name: Copy MySQL configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
   notify: restart mysqld
 
 - name: ensure MySQL is running (and enable it at boot)
@@ -36,6 +36,7 @@
 
 - name: Create Application DB User
   mysql_user: name={{ db_user }} password={{ my_usr_pwd.stdout }} priv={{ db_name }}.*:ALL host='%' state=present
+  when: db_exist.changed
 
 - name: MySQL details
   # http://docs.ansible.com/YAMLSyntax.html#gotchas
