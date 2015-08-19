@@ -11,7 +11,7 @@
   command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
 
 - name: Copy MySQL configuration file
-  template: src=my.cnf.j2 dest=/etc/my.cnf
+  copy: src=my.cnf.j2 dest=/etc/my.cnf
   notify: restart mysqld
 
 - name: ensure MySQL is running (and enable it at boot)
