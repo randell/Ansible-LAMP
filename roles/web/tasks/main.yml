@@ -6,6 +6,3 @@
   - include: web_user.yml tags=web_user
   - include: web_httpd.yml tags=web_httpd
   - include: web_php.yml tags=web_php
-
-#- name: Copy the code from repository
-#  git: repo={{ repository }} version={{ webapp_version }} dest=/var/www/html/

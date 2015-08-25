@@ -38,6 +38,9 @@
     file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0644 owner=websites-live group=websites-live
     when: not index.stat.exists
 
+  - name: Copy the code from repository
+    git: repo={{ repository }} version={{ webapp_version }} dest=/data/websites-live/{{vhost_name}}/public/
+
   - name: Create vhost root_private
     file: path=/data/websites-live/{{vhost_name}}/private state=directory mode=0755 owner=websites-live group=websites-live
 
