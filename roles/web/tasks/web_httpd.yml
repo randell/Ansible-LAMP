@@ -3,8 +3,8 @@
   - name: Set HTTPD in worker mode
     replace: dest=/etc/sysconfig/httpd regexp="^#HTTPD=/usr/sbin/httpd.worker" replace="HTTPD=/usr/sbin/httpd.worker"
 
-  - name: Download rpmforge repo
-    get_url: dest=/tmp/rpmforge.rpm  url=http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.{{ansible_architecture}}.rpm
+  - name: Copy rpmforge rpm
+    copy: src=rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm dest=/tmp/rpmforge.rpm
 
   - name: Install rpmforge repo
     yum: pkg=/tmp/rpmforge.rpm state=present
