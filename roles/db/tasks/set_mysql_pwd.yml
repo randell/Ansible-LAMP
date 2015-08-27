@@ -8,8 +8,12 @@
 - name: PWD
   debug: msg="MySQL root password  =====================> {{my_pwd.stdout}} <====================="
 
-- name: Run mysql_secure_installation automated version
-  script: mysql_secure_installation.sh '{{my_pwd.stdout}}'
+- name: Set root password
+  mysql_user: name=root password={{my_pwd.stdout}} host="{{ item }}"
+  with_items:
+  - 127.0.0.1
+  - ::1
+  - localhost 
 
 - name: Set up /root/.my.cnf
   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root mode=600
