@@ -30,13 +30,13 @@
   - name: Create vhost root_public
     file: path=/data/websites-live/{{vhost_name}}/public state=directory mode=0755 owner=websites-live group=websites-live
 
-  - name: Check if a vhost index file has already been created
-    stat: path=/data/websites-live/{{vhost_name}}/public/index.html
-    register: index
+#  - name: Check if a vhost index file has already been created
+#    stat: path=/data/websites-live/{{vhost_name}}/public/index.html
+#    register: index
 
-  - name: Create vhost index file
-    file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0644 owner=websites-live group=websites-live
-    when: not index.stat.exists
+#  - name: Create vhost index file
+#    file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0644 owner=websites-live group=websites-live
+#    when: not index.stat.exists
 
   - name: Copy the code from repository
     git: repo={{ repository }} version={{ webapp_version }} dest=/data/websites-live/{{vhost_name}}/public/
