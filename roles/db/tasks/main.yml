@@ -16,7 +16,7 @@
   notify: restart mysqld
 
 - name: wait for db server to come up
-  wait_for: host={{ inventory_hostname }} port=3306 state=started timeout=80
+  wait_for: host=127.0.0.1 port=3306 state=started timeout=80
 
 - name: ensure MySQL is running (and enable it at boot)
   service: name=mysqld state=started enabled=yes
