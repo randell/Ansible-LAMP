@@ -15,11 +15,11 @@
   copy: src=my.cnf dest=/etc/my.cnf
   notify: restart mysqld
 
-- name: wait for db server to come up
-  wait_for: host=0.0.0.0 port=3306 state=started timeout=80
+#- name: wait for db server to come up
+#  wait_for: host=0.0.0.0 port=3306 state=started timeout=80
 
-- name: ensure MySQL is running (and enable it at boot)
-  service: name=mysqld state=started enabled=yes
+#- name: ensure MySQL is running (and enable it at boot)
+#  service: name=mysqld state=started enabled=yes
 
 - name: stat /root/.my.cnf
   stat: path=/root/.my.cnf
