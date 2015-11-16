@@ -7,6 +7,7 @@
   sudo: yes
   roles:
   - common
+  - dotfiles
 
 # Configure and deploy database servers.
 - hosts: dbservers
