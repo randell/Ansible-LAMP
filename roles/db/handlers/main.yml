@@ -1,4 +1,3 @@
 ---
-# this might be in a file like handlers/handlers.yml
 - name: restart mysqld
-  service: name=mysqld state=restarted
+  service: name=mysqld state=restarted sleep=5

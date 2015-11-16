@@ -25,27 +25,27 @@
     copy: src=rr_generic.conf dest=/etc/httpd/conf.d/rr_generic.conf
 
   - name: Create vhost root
-    file: path=/data/websites-live/{{vhost_name}} state=directory mode=0755
+    file: path=/data/websites-live/{{vhost_name}} state=directory mode=2775
 
   - name: Create vhost root_public
-    file: path=/data/websites-live/{{vhost_name}}/public state=directory mode=0755 owner=websites-live group=websites-live
+    file: path=/data/websites-live/{{vhost_name}}/public state=directory mode=2775 owner=websites-live group=websites-live
 
 #  - name: Check if a vhost index file has already been created
 #    stat: path=/data/websites-live/{{vhost_name}}/public/index.html
 #    register: index
 
 #  - name: Create vhost index file
-#    file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0644 owner=websites-live group=websites-live
+#    file: path=/data/websites-live/{{vhost_name}}/public/index.html state=touch mode=0664 owner=websites-live group=websites-live
 #    when: not index.stat.exists
 
   - name: Copy the code from repository
     git: repo={{ repository }} version={{ webapp_version }} dest=/data/websites-live/{{vhost_name}}/public/
 
   - name: Create vhost root_private
-    file: path=/data/websites-live/{{vhost_name}}/private state=directory mode=0755 owner=websites-live group=websites-live
+    file: path=/data/websites-live/{{vhost_name}}/private state=directory mode=2775 owner=websites-live group=websites-live
 
   - name: Create vhost root_logs
-    file: path=/data/websites-live/{{vhost_name}}/logs state=directory mode=0755
+    file: path=/data/websites-live/{{vhost_name}}/logs state=directory mode=2775
 
   - name: Check if vhost error_log file has already been created
     stat: path=/data/websites-live/{{vhost_name}}/logs/error.log

@@ -8,17 +8,21 @@
    - mysql-server
    - MySQL-python27
    
-- name: Move MyQSL data dir
-  command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
+#- name: Move MyQSL data dir
+#  command: mv /var/lib/mysql /data/ removes=/var/lib/mysql creates=/data/mysql
 
 - name: Copy MySQL configuration file
   copy: src=my.cnf dest=/etc/my.cnf
-  notify: restart mysqld
+  notify: 
+  - restart mysqld
 
+- name: Start Mysql Service
+  service: name=mysqld state=started enabled=yes
 #- name: wait for db server to come up
 #  wait_for: host=0.0.0.0 port=3306 state=started timeout=80
 
 #- name: ensure MySQL is running (and enable it at boot)
+#  action: service name=mysqld state=started enabled=yes
 #  service: name=mysqld state=started enabled=yes
 
 - name: stat /root/.my.cnf

@@ -1,0 +1,3 @@
+---
+  - name: Set up /etc/profile
+    template: src=profile.j2 dest=/etc/profile owner=root mode=644
